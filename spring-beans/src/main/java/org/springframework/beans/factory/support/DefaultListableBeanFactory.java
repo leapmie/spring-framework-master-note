@@ -942,6 +942,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				 * 最后存储于IOC容器（DefaultListableBeanFactory是一个IOC容器）的一个Map变量中。
 				 * */
 				this.beanDefinitionMap.put(beanName, beanDefinition);
+				/**
+				 * 把所有的Bean名存储于beanDefinitionNames列表中
+				 */
 				this.beanDefinitionNames.add(beanName);
 				this.manualSingletonNames.remove(beanName);
 			}

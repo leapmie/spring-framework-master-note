@@ -855,6 +855,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// Initialize LoadTimeWeaverAware beans early to allow for registering their transformers early.
 		String[] weaverAwareNames = beanFactory.getBeanNamesForType(LoadTimeWeaverAware.class, false, false);
+
+		/** 循环调用getBean方法实例化Bean **/
 		for (String weaverAwareName : weaverAwareNames) {
 			getBean(weaverAwareName);
 		}
