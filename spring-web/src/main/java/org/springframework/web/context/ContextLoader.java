@@ -281,7 +281,7 @@ public class ContextLoader {
 			// Store context in local instance variable, to guarantee that
 			// it is available on ServletContext shutdown.
 			if (this.context == null) {
-				/** 获取SpringIOC容器类型 **/
+				/** [note-by-leapmie] 获取SpringIOC容器类型 **/
 				this.context = createWebApplicationContext(servletContext);
 			}
 			if (this.context instanceof ConfigurableWebApplicationContext) {
@@ -295,10 +295,11 @@ public class ContextLoader {
 						ApplicationContext parent = loadParentContext(servletContext);
 						cwac.setParent(parent);
 					}
-					/** 配置和刷新容器 **/
+					/** [note-by-leapmie] 配置和刷新容器 **/
 					configureAndRefreshWebApplicationContext(cwac, servletContext);
 				}
 			}
+			/** [note-by-leapmie] 通过servletContext存储全局变量，把当前IOC容器存储（方便后续创建子容器） */
 			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);
 
 			ClassLoader ccl = Thread.currentThread().getContextClassLoader();
@@ -381,6 +382,13 @@ public class ContextLoader {
 		}
 	}
 
+	/**
+	 * [note-by-leapmie]
+	 * 此处的ServletContext是有ContextLoaderListener传入
+	 * Listener初始化时web容器会为Listener传入ServletContext
+	 * ServletContext相当于是web应用的全局上下文，
+	 * 可以利用ServletContext保存一些状态或全局变量
+	 */
 	protected void configureAndRefreshWebApplicationContext(ConfigurableWebApplicationContext wac, ServletContext sc) {
 		if (ObjectUtils.identityToString(wac).equals(wac.getId())) {
 			// The application context id is still set to its original default value
@@ -396,6 +404,7 @@ public class ContextLoader {
 			}
 		}
 
+		/** [note-by-leapmie] 容器中保存ServletContext */
 		wac.setServletContext(sc);
 		String configLocationParam = sc.getInitParameter(CONFIG_LOCATION_PARAM);
 		if (configLocationParam != null) {
@@ -411,7 +420,7 @@ public class ContextLoader {
 		}
 
 		customizeContext(sc, wac);
-		/** 调用容器的refresh()方法，此处wac对应的类是XmlWebApplicationContext **/
+		/** [note-by-leapmie] 调用容器的refresh()方法，此处wac对应的类是XmlWebApplicationContext **/
 		wac.refresh();
 	}
 
