@@ -509,7 +509,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	@Override
-	/** 核心过程 **/
+	/** [note-by-leapmie ]核心过程 **/
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
@@ -517,6 +517,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			// Tell the subclass to refresh the internal bean factory.
 			/**
+			 * [note-by-leapmie]
 			 * obtainFreshBeanFactory方法中会调用loadBeanDefinition方法，用于加载bean的定义
 			 */
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
@@ -547,7 +548,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
-				/** 初始化所有非lazy-init的bean **/
+				/** [note-by-leapmie] 初始化所有非lazy-init的bean **/
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
@@ -624,7 +625,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see #getBeanFactory()
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
-		/** 实际是调用子类AbstractRefreshableApplicationContext中的refreshBeanFactory方法 **/
+		/** [note-by-leapmie] 实际是调用子类AbstractRefreshableApplicationContext中的refreshBeanFactory方法 **/
 		refreshBeanFactory();
 		return getBeanFactory();
 	}

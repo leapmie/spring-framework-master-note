@@ -333,7 +333,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 				if (encodedResource.getEncoding() != null) {
 					inputSource.setEncoding(encodedResource.getEncoding());
 				}
-				/** do开头的方法表示是正真执行处理操作的方法 **/
+				/** [note-by-leapmie] do开头的方法表示是正真执行处理操作的方法 **/
 				return doLoadBeanDefinitions(inputSource, encodedResource.getResource());
 			}
 			finally {
@@ -390,9 +390,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 			throws BeanDefinitionStoreException {
 
 		try {
-			/** 读取加载配置文件 **/
+			/** [note-by-leapmie] 读取加载配置文件 **/
 			Document doc = doLoadDocument(inputSource, resource);
-			/** 注册Bean **/
+			/** [note-by-leapmie] 注册Bean **/
 			int count = registerBeanDefinitions(doc, resource);
 			if (logger.isDebugEnabled()) {
 				logger.debug("Loaded " + count + " bean definitions from " + resource);
@@ -511,9 +511,10 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 * @see BeanDefinitionDocumentReader#registerBeanDefinitions
 	 */
 	public int registerBeanDefinitions(Document doc, Resource resource) throws BeanDefinitionStoreException {
-		/** 获取BeanDefinitionDocumentReader,此处获得的对象实际类型为DefaultBeanDefinitionDocumentReader **/
+		/** [note-by-leapmie] 获取BeanDefinitionDocumentReader,此处获得的对象实际类型为DefaultBeanDefinitionDocumentReader **/
 		BeanDefinitionDocumentReader documentReader = createBeanDefinitionDocumentReader();
 		int countBefore = getRegistry().getBeanDefinitionCount();
+		/** [note-by-leapmie] 调用Reader的registerBeanDefinitions方法 */
 		documentReader.registerBeanDefinitions(doc, createReaderContext(resource));
 		return getRegistry().getBeanDefinitionCount() - countBefore;
 	}

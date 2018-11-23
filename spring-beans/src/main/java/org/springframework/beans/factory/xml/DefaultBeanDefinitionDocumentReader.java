@@ -146,7 +146,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		}
 
 		preProcessXml(root);
-		/** 解析转换为BeanDefinitions **/
+		/** [note-by-leapmie] 解析转换为BeanDefinitions **/
 		parseBeanDefinitions(root, this.delegate);
 		postProcessXml(root);
 
@@ -173,9 +173,9 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 				Node node = nl.item(i);
 				if (node instanceof Element) {
 					Element ele = (Element) node;
-					/** 判断元素是否属于默认的Namespace（当标签为<beans>时判断条件为真） **/
+					/** [note-by-leapmie] 判断元素是否属于默认的Namespace（当标签为<beans>时判断条件为真） **/
 					if (delegate.isDefaultNamespace(ele)) {
-						/** 处理默认的Element **/
+						/** [note-by-leapmie] 处理默认的Element **/
 						parseDefaultElement(ele, delegate);
 					}
 					else {
@@ -190,19 +190,19 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	}
 
 	private void parseDefaultElement(Element ele, BeanDefinitionParserDelegate delegate) {
-		/** 处理<import>标签 **/
+		/** [note-by-leapmie] 处理<import>标签 **/
 		if (delegate.nodeNameEquals(ele, IMPORT_ELEMENT)) {
 			importBeanDefinitionResource(ele);
 		}
-		/** 处理<alias>标签 **/
+		/** note-by-leapmie]  处理<alias>标签 **/
 		else if (delegate.nodeNameEquals(ele, ALIAS_ELEMENT)) {
 			processAliasRegistration(ele);
 		}
-		/** 处理<bean>标签 **/
+		/** note-by-leapmie] 处理<bean>标签 **/
 		else if (delegate.nodeNameEquals(ele, BEAN_ELEMENT)) {
 			processBeanDefinition(ele, delegate);
 		}
-		/** 处理嵌套的<beans>标签 **/
+		/** note-by-leapmie] 处理嵌套的<beans>标签 **/
 		else if (delegate.nodeNameEquals(ele, NESTED_BEANS_ELEMENT)) {
 			// recurse
 			doRegisterBeanDefinitions(ele);
@@ -311,6 +311,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	 */
 	protected void processBeanDefinition(Element ele, BeanDefinitionParserDelegate delegate) {
 		/**
+		 * [note-by-leapmie]
 		 * 调用BeanDefinitionParserDelegate的parseBeanDefinitionElement方法
 		 * 返回一个包含BeanDefinition信息的BeanDefinitionHolder实例
 		 * **/
@@ -320,6 +321,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 			try {
 				// Register the final decorated instance.
 				/**
+				 * [note-by-leapmie]
 				 * 注册BeanDefinition
 				 * 传入的参数是刚刚获取到的BeanDefinitionHolder对象，再加上DefaultListableBeanFactory对象
 				 * DefaultListableBeanFactory对象的由来需要追溯到AbstractRefreshableApplicationContext的refreshBeanFactory()方法中

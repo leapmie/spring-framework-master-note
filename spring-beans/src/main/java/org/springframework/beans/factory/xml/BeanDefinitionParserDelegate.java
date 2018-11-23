@@ -434,7 +434,7 @@ public class BeanDefinitionParserDelegate {
 			checkNameUniqueness(beanName, aliases, ele);
 		}
 
-		/** 此处调用的parseBeanDefinitionElement方法返回的是BeanDefinition **/
+		/** [note-by-leapmie] 此处调用的parseBeanDefinitionElement方法返回的是BeanDefinition **/
 		AbstractBeanDefinition beanDefinition = parseBeanDefinitionElement(ele, beanName, containingBean);
 		if (beanDefinition != null) {
 			if (!StringUtils.hasText(beanName)) {
@@ -466,7 +466,7 @@ public class BeanDefinitionParserDelegate {
 				}
 			}
 			String[] aliasesArray = StringUtils.toStringArray(aliases);
-			/** 把beanDefinition注入BeanDefinitionHolder中 **/
+			/** [note-by-leapmie] 把beanDefinition注入BeanDefinitionHolder中 **/
 			return new BeanDefinitionHolder(beanDefinition, beanName, aliasesArray);
 		}
 
@@ -516,6 +516,7 @@ public class BeanDefinitionParserDelegate {
 		try {
 			AbstractBeanDefinition bd = createBeanDefinition(className, parent);
 
+			/** [note-by-leapmie] 解析bean定义的属性 **/
 			parseBeanDefinitionAttributes(ele, beanName, containingBean, bd);
 			bd.setDescription(DomUtils.getChildElementValueByTagName(ele, DESCRIPTION_ELEMENT));
 

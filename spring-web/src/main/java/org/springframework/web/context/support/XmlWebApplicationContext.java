@@ -91,7 +91,7 @@ public class XmlWebApplicationContext extends AbstractRefreshableWebApplicationC
 		// Allow a subclass to provide custom initialization of the reader,
 		// then proceed with actually loading the bean definitions.
 		initBeanDefinitionReader(beanDefinitionReader);
-		/** 注意传入的beanDefinitionReader是XmlBeanDefinitionReader **/
+		/** [note-by-leapmie] 注意传入的beanDefinitionReader是XmlBeanDefinitionReader **/
 		loadBeanDefinitions(beanDefinitionReader);
 	}
 
@@ -123,7 +123,7 @@ public class XmlWebApplicationContext extends AbstractRefreshableWebApplicationC
 		String[] configLocations = getConfigLocations();
 		if (configLocations != null) {
 			for (String configLocation : configLocations) {
-				/** 实际是调用XmlBeanDefinitionReader的loadBeanDefinitions方法 **/
+				/** [note-by-leapmie] 实际是调用XmlBeanDefinitionReader的loadBeanDefinitions方法 **/
 				reader.loadBeanDefinitions(configLocation);
 			}
 		}

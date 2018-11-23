@@ -936,6 +936,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			else {
 				// Still in startup registration phase
 				/**
+				 * [note-by-leapmie]
 				 * 把BeanDefinitionc添加到beanDefinitionMap中
 				 * Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(256);
 				 * 由此可知，IOC的启动过程是先把Bean的定义解析转换为BeanDefiniton，
@@ -943,7 +944,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				 * */
 				this.beanDefinitionMap.put(beanName, beanDefinition);
 				/**
-				 * 把所有的Bean名存储于beanDefinitionNames列表中
+				 * [note-by-leapmie]
+				 * 把所有的Bean名字存储于beanDefinitionNames列表中，方便后续查询
 				 */
 				this.beanDefinitionNames.add(beanName);
 				this.manualSingletonNames.remove(beanName);

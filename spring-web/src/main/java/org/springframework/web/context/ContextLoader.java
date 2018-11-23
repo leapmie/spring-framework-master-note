@@ -140,6 +140,7 @@ public class ContextLoader {
 		// by application developers.
 		try {
 			/**
+			 * [note-by-leapmie]
 			 * DEFAULT_STRATEGIES_PATH的值是ContextLoader.properties
 			 * ContextLoader.properties的内容如下
 			 * org.springframework.web.context.WebApplicationContext=org.springframework.web.context.support.XmlWebApplicationContext
@@ -337,12 +338,14 @@ public class ContextLoader {
 	 * @see ConfigurableWebApplicationContext
 	 */
 	protected WebApplicationContext createWebApplicationContext(ServletContext sc) {
-		/** determineContextClass方法中获取contextClass **/
+
+		/** [note-by-leapmie] determineContextClass方法中获取contextClass **/
 		Class<?> contextClass = determineContextClass(sc);
 		if (!ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass)) {
 			throw new ApplicationContextException("Custom context class [" + contextClass.getName() +
 					"] is not of type [" + ConfigurableWebApplicationContext.class.getName() + "]");
 		}
+		/** [note-by-leapmie] 根据contextClass返回实例 */
 		return (ConfigurableWebApplicationContext) BeanUtils.instantiateClass(contextClass);
 	}
 
@@ -367,6 +370,7 @@ public class ContextLoader {
 		}
 		else {
 			/**
+			 * [note-by-leapmie]
 			 * defaultStrategies的值是在本类中的static方法中注入的
 			 * 即该类加载过程中defaultStrategies已经被赋值
 			 * 本类的开始部分有static代码块

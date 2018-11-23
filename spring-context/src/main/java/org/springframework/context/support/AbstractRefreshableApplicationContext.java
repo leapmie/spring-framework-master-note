@@ -128,13 +128,14 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 		}
 		try {
 			/**
+			 * [note-by-leapmie]
 			 * 注意此处的beanFactory是DefaultListableBeanFactory的实例
 			 * 后续所有方法都会把beanFactory作为参数传入
 			 */
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
 			beanFactory.setSerializationId(getId());
 			customizeBeanFactory(beanFactory);
-			/** 调用子类XmlWebApplicationContext的loadBeanDefinitions方法 **/
+			/** [note-by-leapmie] 调用子类XmlWebApplicationContext的loadBeanDefinitions方法 **/
 			loadBeanDefinitions(beanFactory);
 			synchronized (this.beanFactoryMonitor) {
 				this.beanFactory = beanFactory;
