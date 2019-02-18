@@ -243,9 +243,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		Object bean;
 
 		// Eagerly check singleton cache for manually registered singletons.
-		/** 根据beanName从单例bean实例缓存中获取实例 **/
+		/** [note-by-leapmie] 根据beanName从单例bean实例缓存中获取实例 **/
 		Object sharedInstance = getSingleton(beanName);
-		/** 如果sharedInstance不为空（即beanName对应的bean是单例，且已经创建过实例） **/
+		/** [note-by-leapmie] 如果sharedInstance不为空（即beanName对应的bean是单例，且已经创建过实例） **/
 		if (sharedInstance != null && args == null) {
 			if (logger.isTraceEnabled()) {
 				if (isSingletonCurrentlyInCreation(beanName)) {
@@ -256,20 +256,20 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					logger.trace("Returning cached instance of singleton bean '" + beanName + "'");
 				}
 			}
-			/** 对实例加工 **/
+			/** [note-by-leapmie] 对实例加工 **/
 			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
 		}
-		/** 当sharedInstance不为空 **/
+		/** [note-by-leapmie] 当sharedInstance为空 **/
 		else {
 			// Fail if we're already creating this bean instance:
 			// We're assumably within a circular reference.
-			/** 循环引用的问题导致实例化原型bean失败时抛出异常 **/
+			/** [note-by-leapmie] 循环引用的问题导致实例化原型bean失败时抛出异常 **/
 			if (isPrototypeCurrentlyInCreation(beanName)) {
 				throw new BeanCurrentlyInCreationException(beanName);
 			}
 
 			// Check if bean definition exists in this factory.
-			/** 在父级容器中查找 **/
+			/** [note-by-leapmie] 在父级容器中查找 **/
 			BeanFactory parentBeanFactory = getParentBeanFactory();
 			if (parentBeanFactory != null && !containsBeanDefinition(beanName)) {
 				// Not found -> check parent.
@@ -292,7 +292,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			if (!typeCheckOnly) {
-				/** 标记bean已创建过 **/
+				/** [note-by-leapmie] 标记bean已创建过 **/
 				markBeanAsCreated(beanName);
 			}
 
@@ -320,11 +320,20 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 
 				// Create bean instance.
-				/** 创建单例模式的bean实例 **/
+				/** [note-by-leapmie] 创建单例模式的bean实例 **/
 				if (mbd.isSingleton()) {
+					/**
+					 * [note-by-leapmie]
+					 * 注意这里调用的是getSingleton方法，
+					 * 其中用到了lambda语法创建了一个实现了ObjectFactory的匿名内部类，
+					 * 并在匿名内部类中调用了createBean方法。
+					 * 这里除了要关注createBean方法之外，还要关注getSingleton，
+					 * 因为getSingleton里面有关于创建后的实例是如何存储的秘密
+					 */
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
 							/**
+							 * [note-by-leapmie]
 							 * 创建bean实例
 							 * 实际是调用子类AbstractAutowireCapableBeanFactory的createBean方法
 							 * **/
@@ -341,7 +350,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
 				}
 
-				/** 创建原型模式的bean实例 **/
+				/** [note-by-leapmie] 创建原型模式的bean实例 **/
 				else if (mbd.isPrototype()) {
 					// It's a prototype -> create a new instance.
 					Object prototypeInstance = null;

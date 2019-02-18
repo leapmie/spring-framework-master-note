@@ -410,6 +410,11 @@ public class ContextLoader {
 
 		/** [note-by-leapmie] 容器中保存ServletContext */
 		wac.setServletContext(sc);
+		/**
+		 * [note-by-leapmie]
+		 * CONFIG_LOCATION_PARAM = "contextConfigLocation"
+		 * 对应的含义是读取web.xml中contextConfigLocation的值
+		 */
 		String configLocationParam = sc.getInitParameter(CONFIG_LOCATION_PARAM);
 		if (configLocationParam != null) {
 			wac.setConfigLocation(configLocationParam);

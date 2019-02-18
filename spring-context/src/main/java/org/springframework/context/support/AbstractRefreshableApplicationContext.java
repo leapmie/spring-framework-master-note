@@ -137,6 +137,10 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 			customizeBeanFactory(beanFactory);
 			/** [note-by-leapmie] 调用子类XmlWebApplicationContext的loadBeanDefinitions方法 **/
 			loadBeanDefinitions(beanFactory);
+			/** [note-by-leapmie]
+			 * 除了在后续方法中把beanFactory作为参数传入，
+			 * 此处还在类的全局变量中保存了beanFactory，方便直接调用
+			 */
 			synchronized (this.beanFactoryMonitor) {
 				this.beanFactory = beanFactory;
 			}

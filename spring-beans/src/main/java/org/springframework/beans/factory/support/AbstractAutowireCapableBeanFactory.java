@@ -536,7 +536,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
 		}
 		if (instanceWrapper == null) {
-			/** 创建bean实例 **/
+			/** [note-by-leapmie] 创建bean实例 **/
 			instanceWrapper = createBeanInstance(beanName, mbd, args);
 		}
 		final Object bean = instanceWrapper.getWrappedInstance();
@@ -574,7 +574,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Initialize the bean instance.
 		Object exposedObject = bean;
 		try {
-			/** 依赖注入 **/
+			/** [note-by-leapmie] 依赖注入 **/
 			populateBean(beanName, mbd, instanceWrapper);
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
@@ -1126,7 +1126,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			return obtainFromSupplier(instanceSupplier, beanName);
 		}
 
-		/** 如果有工厂方法，则调用工厂方法实例化bean **/
+		/** [note-by-leapmie]
+		 * 如果有工厂方法，则调用工厂方法实例化bean
+		 * 这里的工厂方法是指Spring在定义Bean时，有一个属性值factory-method可指定对应的工厂方法
+		 * **/
 		if (mbd.getFactoryMethodName() != null) {
 			return instantiateUsingFactoryMethod(beanName, mbd, args);
 		}
@@ -1144,11 +1147,14 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 		if (resolved) {
 			if (autowireNecessary) {
-				/** 根据autowireConstructor方法注释，其含义大致为如果含有有参构造函数，则调用autowireConstructor **/
+				/** [note-by-leapmie]
+				 * 根据autowireConstructor方法的API注释
+				 * 其含义大致为如果含有有参构造函数，则调用autowireConstructor
+				 * **/
 				return autowireConstructor(beanName, mbd, null, null);
 			}
 			else {
-				/** 如果是无参构造函数，则调用instantiateBean **/
+				/** [note-by-leapmie] 如果是无参构造函数，则调用instantiateBean **/
 				return instantiateBean(beanName, mbd);
 			}
 		}
@@ -1266,6 +1272,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}
 			else {
 				/**
+				 * [note-by-leapmie]
 				 * 获取生成策略，然后调用instantiate方法进行实例化
 				 * 跟踪可知此处返回的策略是CglibSubclassingInstantiationStrategy
 				 * 而instantiate方法是在其父类SimpleInstantiationStrategy中定义
@@ -1651,12 +1658,14 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		List<PropertyValue> deepCopy = new ArrayList<>(original.size());
 		boolean resolveNecessary = false;
 		for (PropertyValue pv : original) {
+			/** [note-by-leapmie] 如果属性值已经转换过，则不需要再转换*/
 			if (pv.isConverted()) {
 				deepCopy.add(pv);
 			}
 			else {
 				String propertyName = pv.getName();
 				Object originalValue = pv.getValue();
+				/** [note-by-leapmie] 转换属性值 **/
 				Object resolvedValue = valueResolver.resolveValueIfNecessary(pv, originalValue);
 				Object convertedValue = resolvedValue;
 				boolean convertible = bw.isWritableProperty(propertyName) &&
@@ -1690,6 +1699,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		// Set our (possibly massaged) deep copy.
 		try {
+			/** [note-by-leapmie] 实现依赖注入 */
 			bw.setPropertyValues(new MutablePropertyValues(deepCopy));
 		}
 		catch (BeansException ex) {

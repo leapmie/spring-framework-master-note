@@ -60,7 +60,12 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 	@Override
 	public Object instantiate(RootBeanDefinition bd, @Nullable String beanName, BeanFactory owner) {
 		// Don't override the class with CGLIB if no overrides.
-		/** 如果没有覆盖方法，则就不需要使用CGLIB **/
+		/** [note-by-leapmie]
+		 * 如果没有Overrides方法，则不需要使用CGLIB
+		 * 这里的Overrrides不是指我们平时说的简单的方法重写
+		 * 而是指在定义bean的时候spring可以进行方法级别的注入
+		 * 通过配置标签replaced-method或lookup-method实现，一般我们很少用到这个属性
+		 */
 		if (!bd.hasMethodOverrides()) {
 			Constructor<?> constructorToUse;
 			synchronized (bd.constructorArgumentLock) {
@@ -85,11 +90,12 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 					}
 				}
 			}
+			/** [note-by-leapmie] 通过反射方法调用构造函数创建实例*/
 			return BeanUtils.instantiateClass(constructorToUse);
 		}
 		else {
 			// Must generate CGLIB subclass.
-			/** 否则只能生成CGLIB子类 **/
+			/** [note-by-leapmie] 否则只能生成CGLIB子类 **/
 			return instantiateWithMethodInjection(bd, beanName, owner);
 		}
 	}
